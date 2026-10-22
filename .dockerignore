@@ -1,0 +1,10 @@
+node_modules
+.output
+.nitro
+.tanstack
+data
+.git
+.github
+*.log
+.env*
+deploy

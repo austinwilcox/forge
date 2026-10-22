@@ -1,0 +1,5 @@
+allowBuilds:
+  esbuild: true
+  lightningcss: true
+  # Ships N-API prebuilds for linux x64/arm64 (glibc + musl); no compile needed.
+  better-sqlite3: false

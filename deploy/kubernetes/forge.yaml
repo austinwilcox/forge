@@ -1,0 +1,90 @@
+# Single-replica deployment (SQLite = one writer). Works on k3s on a Pi.
+#   kubectl apply -f deploy/kubernetes/forge.yaml
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: forge
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: forge
+  namespace: forge
+type: Opaque
+stringData:
+  # Multi-tenant sign-in via your identity provider. For a single-user install
+  # remove the OIDC_* keys (and optionally set APP_PASSWORD instead).
+  APP_URL: "https://forge.example.com"
+  OIDC_ISSUER: "https://auth.example.com/application/o/forge/"
+  OIDC_CLIENT_ID: "forge"
+  OIDC_CLIENT_SECRET: "change-me"
+  OIDC_PROVIDER_NAME: "Authentik"
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: forge-data
+  namespace: forge
+spec:
+  accessModes: ["ReadWriteOnce"]
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: forge
+  namespace: forge
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels: { app: forge }
+  template:
+    metadata:
+      labels: { app: forge }
+    spec:
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+      containers:
+        - name: forge
+          image: ghcr.io/your-github-user/forge:latest
+          ports:
+            - containerPort: 3000
+          env:
+            - name: TZ
+              value: America/Denver
+          envFrom:
+            - secretRef:
+                name: forge
+          volumeMounts:
+            - name: data
+              mountPath: /data
+          readinessProbe:
+            httpGet: { path: /api/health, port: 3000 }
+            periodSeconds: 10
+          livenessProbe:
+            httpGet: { path: /api/health, port: 3000 }
+            periodSeconds: 30
+          resources:
+            requests: { cpu: 50m, memory: 96Mi }
+            limits: { memory: 256Mi }
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: forge-data
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: forge
+  namespace: forge
+spec:
+  selector: { app: forge }
+  ports:
+    - port: 80
+      targetPort: 3000

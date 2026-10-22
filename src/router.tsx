@@ -34,6 +34,8 @@ export function getRouter() {
 		routeTree,
 		context: { queryClient },
 		scrollRestoration: true,
+		// Mobile scrolls #app-scroll, not the window (see _app.tsx).
+		scrollToTopSelectors: ["#app-scroll"],
 		defaultPreload: "intent",
 		defaultPreloadStaleTime: 0,
 	});

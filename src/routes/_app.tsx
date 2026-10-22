@@ -53,8 +53,11 @@ function AppShell() {
 	const theme = useUi((s) => s.theme);
 	const toggleTheme = useUi((s) => s.toggleTheme);
 
+	// Mobile: a fixed-height column (header, scroller, nav) instead of page
+	// scroll. iOS standalone PWAs strand `position: fixed` bars mid-screen
+	// after the keyboard closes or the page rubber-bands.
 	return (
-		<div className="grain min-h-dvh lg:grid lg:grid-cols-[232px_1fr]">
+		<div className="grain flex h-dvh flex-col overflow-hidden lg:grid lg:h-auto lg:min-h-dvh lg:grid-cols-[232px_1fr] lg:overflow-visible">
 			<aside className="sticky top-0 hidden h-dvh flex-col border-line border-r bg-surface/60 px-4 py-6 lg:flex">
 				<Link to="/" className="mb-10 px-2">
 					<Logo />
@@ -90,7 +93,7 @@ function AppShell() {
 				</div>
 			</aside>
 
-			<header className="sticky top-0 z-20 flex items-center justify-between border-line border-b bg-bg/85 px-4 pt-[calc(env(safe-area-inset-top)+0.75rem)] pb-3 backdrop-blur lg:hidden">
+			<header className="z-20 flex shrink-0 items-center justify-between border-line border-b bg-bg/85 px-4 pt-[calc(env(safe-area-inset-top)+0.75rem)] pb-3 backdrop-blur lg:hidden">
 				<Link to="/">
 					<Logo compact />
 				</Link>
@@ -107,11 +110,17 @@ function AppShell() {
 				</div>
 			</header>
 
-			<main className="mx-auto w-full max-w-5xl px-4 pt-6 pb-28 sm:px-6 lg:px-10 lg:pt-10 lg:pb-16">
-				<Outlet />
-			</main>
+			<div
+				id="app-scroll"
+				data-scroll-restoration-id="app-scroll"
+				className="min-h-0 flex-1 overflow-y-auto overscroll-contain lg:contents"
+			>
+				<main className="mx-auto w-full max-w-5xl px-4 pt-6 pb-8 sm:px-6 lg:px-10 lg:pt-10 lg:pb-16">
+					<Outlet />
+				</main>
+			</div>
 
-			<nav className="fixed inset-x-0 bottom-0 z-20 grid grid-cols-6 border-line border-t bg-surface/95 pb-[env(safe-area-inset-bottom)] backdrop-blur lg:hidden">
+			<nav className="z-20 grid shrink-0 grid-cols-6 border-line border-t bg-surface/95 pb-[env(safe-area-inset-bottom)] backdrop-blur lg:hidden">
 				{NAV.map((item) => (
 					<Link
 						key={item.to}

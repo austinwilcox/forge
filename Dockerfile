@@ -10,17 +10,17 @@ RUN corepack enable
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 RUN --mount=type=cache,id=pnpm,target=/root/.local/share/pnpm/store \
     pnpm install --frozen-lockfile
+ARG APP_COMMIT=
+ENV APP_COMMIT=${APP_COMMIT}
 COPY . .
 RUN pnpm build && mkdir -p /out/data
 
 # ── Runtime ───────────────────────────────────────────────────────────────────
 FROM node:22-bookworm-slim AS runtime
-ARG APP_VERSION=dev
 ENV NODE_ENV=production \
     HOST=0.0.0.0 \
     PORT=3000 \
-    DATABASE_PATH=/data/forge.db \
-    APP_VERSION=${APP_VERSION}
+    DATABASE_PATH=/data/forge.db
 WORKDIR /app
 COPY --from=build --chown=node:node /app/.output ./.output
 # No RUN steps here: the arm64 image assembles without CPU emulation.

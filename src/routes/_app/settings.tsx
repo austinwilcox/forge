@@ -12,6 +12,7 @@ import {
 } from "#/lib/queries";
 import { profileInput } from "#/lib/schemas";
 import { clearCache, preload } from "#/lib/sync";
+import { VERSION_LABEL } from "#/lib/version";
 import { useUi } from "#/stores/ui";
 
 export const Route = createFileRoute("/_app/settings")({
@@ -174,6 +175,10 @@ function SettingsPage() {
 					</button>
 				</section>
 			)}
+
+			<p className="text-center font-mono text-muted text-xs">
+				Forge {VERSION_LABEL}
+			</p>
 		</div>
 	);
 }

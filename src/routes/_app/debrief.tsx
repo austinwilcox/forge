@@ -48,7 +48,7 @@ function DebriefPage() {
 	const summary = daySummary(day.habits, indexLogs(day.logs), date);
 
 	return (
-		<div className="grid gap-8 lg:grid-cols-[1fr_260px]">
+		<div className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_260px]">
 			<div className="space-y-6">
 				<header className="flex flex-wrap items-end justify-between gap-4">
 					<div>

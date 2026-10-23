@@ -97,7 +97,7 @@ function TodayPage() {
 				</div>
 			</header>
 
-			<section className="grid gap-4 md:grid-cols-[auto_1fr]">
+			<section className="grid grid-cols-1 gap-4 md:grid-cols-[auto_1fr]">
 				<div className="card flex items-center gap-6 p-5">
 					<ScoreRing value={summary.rate} />
 					<dl className="space-y-3 text-sm">
@@ -167,7 +167,7 @@ function TodayPage() {
 									{PILLAR_META[pillar].blurb}
 								</p>
 							</div>
-							<div className="grid gap-2.5">
+							<div className="grid grid-cols-1 gap-2.5">
 								{items.map((h) => (
 									<HabitCard
 										key={h.id}

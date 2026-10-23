@@ -102,7 +102,7 @@ function ProgressPage() {
 						<ScoreTrendChart series={stats.series} />
 					</Panel>
 
-					<div className="grid gap-6 lg:grid-cols-2">
+					<div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
 						<Panel
 							title="1% better"
 							subtitle="Strong days (≥80%) compound you up 1%; weak days (<50%) decay you 1%."
@@ -140,7 +140,7 @@ function ProgressPage() {
 								<thead className="text-muted text-xs uppercase">
 									<tr>
 										<th className="py-2 font-medium">Habit</th>
-										<th className="font-medium">Pillar</th>
+										<th className="hidden font-medium sm:table-cell">Pillar</th>
 										<th className="text-right font-medium">Consistency</th>
 										<th className="text-right font-medium">Streak</th>
 										<th className="text-right font-medium">Best</th>
@@ -149,8 +149,8 @@ function ProgressPage() {
 								<tbody className="font-mono tabular-nums">
 									{stats.habits.map((h) => (
 										<tr key={h.id} className="border-line border-t">
-											<td className="py-2 font-sans">{h.name}</td>
-											<td className="font-sans text-muted">
+											<td className="py-2 font-sans wrap-anywhere">{h.name}</td>
+											<td className="hidden font-sans text-muted sm:table-cell">
 												{PILLAR_META[h.pillar].label}
 											</td>
 											<td className="text-right">{pct(h.rate)}</td>

@@ -45,7 +45,7 @@ function ManualPage() {
 					<p className="max-w-3xl font-serif text-ink text-lg leading-relaxed">
 						{section.summary}
 					</p>
-					<div className="grid gap-3 md:grid-cols-2">
+					<div className="grid grid-cols-1 gap-3 md:grid-cols-2">
 						{section.tenets.map((t) => (
 							<article key={t.title} className="card flex flex-col p-5">
 								<h3 className="font-bold uppercase tracking-wider">

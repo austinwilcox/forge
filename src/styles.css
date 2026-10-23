@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+/* Installed to the home screen (no browser chrome). */
+@custom-variant standalone (@media (display-mode: standalone));
+
 /*
  * Forge design tokens. Dark is the default ("0430, lights off"); `.light` on
  * <html> swaps to a bone-paper day theme. Components only use the semantic

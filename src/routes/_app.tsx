@@ -56,9 +56,11 @@ function AppShell() {
 
 	// Mobile: a fixed-height column (header, scroller, nav) instead of page
 	// scroll. iOS standalone PWAs strand `position: fixed` bars mid-screen
-	// after the keyboard closes or the page rubber-bands.
+	// after the keyboard closes or the page rubber-bands. Standalone uses lvh:
+	// with viewport-fit=cover + black-translucent, iOS reports dvh/svh/100%
+	// one status bar short, leaving a dead strip under the nav.
 	return (
-		<div className="grain flex h-dvh flex-col overflow-hidden lg:grid lg:h-auto lg:min-h-dvh lg:grid-cols-[232px_1fr] lg:overflow-visible">
+		<div className="grain flex h-dvh flex-col standalone:max-lg:h-lvh overflow-hidden lg:grid lg:h-auto lg:min-h-dvh lg:grid-cols-[232px_1fr] lg:overflow-visible">
 			<aside className="sticky top-0 hidden h-dvh flex-col border-line border-r bg-surface/60 px-4 py-6 lg:flex">
 				<Link to="/" className="mb-10 px-2">
 					<Logo />
